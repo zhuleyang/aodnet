@@ -35,3 +35,8 @@ def process_depth(depth):
     return dpt
 
 #创建雾图，I(x)=J(x)t(x)+A(1−t(x))
+def systhesize_haze(gt,depth,j,k):
+    #gt：无雾 RGB 图像
+    #depth：深度图，值越大表示越远
+    #j：控制雾的浓度组别（影响 β）
+    #：控制大气光强度组别（影响 A）
