@@ -2,7 +2,7 @@ import  torch
 #导入神经网络模块
 import torch.nn as nn
 #导入激活函数模块
-import torch.functional as F
+import torch.nn.functional as F
 
 
 class AODnet(nn.Module):
@@ -29,7 +29,7 @@ class AODnet(nn.Module):
         cat1=torch.cat((x1,x2),dim=1)
         x3=F.relu(self.conv3(cat1))
         #第二次拼接
-        cat2=torch.catz((x2,x3),1)
+        cat2=torch.cat((x2,x3),1)
         x4=F.relu(self.conv4(cat2))
         #最后一层拼接前面全部
         cat3=torch.cat((x1,x2,x3,x4),1)
