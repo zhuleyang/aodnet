@@ -80,8 +80,16 @@ val_loader = DataLoader(
 if __name__ == "__main__":
     print("训练集数量：", len(train_data))
     print("验证集数量：", len(val_data))
+
     #初始化模型
     model = AODnet().to(device)               # 模型放到 device（GPU/CPU）
+    #加载旧权重（不会重新创建模型）
+    '''
+    model_path = os.path.join(save_dir, "final_model.pth")
+    if os.path.exists(model_path):
+        print("加载已训练好的模型继续训练……")
+        model.load_state_dict(torch.load(model_path, map_location=device))
+    '''
     criterion = nn.MSELoss()                  # MSE Loss（AOD-Net 经典选择）
     optimizer = optim.Adam(model.parameters(), lr=learn_rate)#学习率与优化器配置
 
