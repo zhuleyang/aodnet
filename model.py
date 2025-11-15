@@ -8,7 +8,7 @@ import torch.functional as F
 class AODnet(nn.Module):
     def __init__(self):
         #父类初始化
-        super(AODnet,self).__init__():
+        super(AODnet,self).__init__()
         #第一层用一乘一的卷积核提取简单的线性特征
         self.conv1=nn.Conv2d(in_channels=3,out_channels=3,kernel_size=1)
         #第二层用三乘三的卷积核捕捉细节
@@ -16,7 +16,7 @@ class AODnet(nn.Module):
         #每一个卷积层都保证图像尺寸不变,第3层为前两个相加
         self.conv3=nn.Conv2d(in_channels=6,out_channels=3,kernel_size=5,padding=2)
         #继续为前两个之和
-        self.conv4=nn.Conv2d(in_channels=6,out_channels==3,kernel_size=7,padding=3)
+        self.conv4=nn.Conv2d(in_channels=6,out_channels=3,kernel_size=7,padding=3)
         #前面所有z卷积输出之和
         self.conv5=nn.Conv2d(in_channels=12,out_channels=3,kernel_size=3,padding=1)
         #定义偏执
