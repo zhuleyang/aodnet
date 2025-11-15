@@ -75,8 +75,10 @@ def main(nyu_path,output_dir):
     mat_path=os.path.join(nyu_path)
     #创建目录
     train=os.path.join(output_dir,'train')
+    val=os.path.join(output_dir,'val')
     demo=os.path.join(output_dir,'demo')
     os.makedirs(train,exist_ok=True)
+    os.makedirs(val,exist_ok=True)
     os.makedirs(demo,exist_ok=True)
     #读取数据
     images,depths=load_nyu(mat_path)
@@ -95,7 +97,19 @@ def main(nyu_path,output_dir):
                 if total%21==0:
                     print(f'完成{total/21}组')
     print('train和demo生成完成')
-
+    total=0
+    for idx in range(100,120):
+        gt = process_rgb(images[idx])  # (480,640,3) float32
+        dpt = process_depth(depths[idx])  # (H,W) float32, 已归一化
+        for j in range(7):
+            for k in range(3):
+                haze = synthesize_haze(gt, dpt, j, k)
+                total+=1
+                save_demo(haze,gt,demo)
+                save_h5(haze,gt,val,total)
+                if total%21==0:
+                    print(f'完成{total/21}组')
+    print('val生成完成')
 if __name__=='__main__':
     nyu_path=r'nyu_depth_v2_labeled.mat'
     output_dir=r'D:\study\aodnet\nyu_data'
