@@ -1,4 +1,5 @@
 import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 import numpy as np
 import h5py
 import random
@@ -21,8 +22,8 @@ os.makedirs(save_dir,exist_ok=True)
 #超参数
 batch_size=32#训练批次
 num_workers=4#4线程加载
-epochs=30#训练轮次
-learn_rate=0.0001#学习率
+epochs=10#训练轮次
+learn_rate=0.00005#学习率
 
 #设置随机数种子（保证结果可复现）
 seed=42
@@ -84,12 +85,12 @@ if __name__ == "__main__":
     #初始化模型
     model = AODnet().to(device)               # 模型放到 device（GPU/CPU）
     #加载旧权重（不会重新创建模型）
-    '''
+
     model_path = os.path.join(save_dir, "final_model.pth")
     if os.path.exists(model_path):
         print("加载已训练好的模型继续训练……")
         model.load_state_dict(torch.load(model_path, map_location=device))
-    '''
+
     criterion = nn.MSELoss()                  # MSE Loss（AOD-Net 经典选择）
     optimizer = optim.Adam(model.parameters(), lr=learn_rate)#学习率与优化器配置
 
@@ -113,7 +114,7 @@ if __name__ == "__main__":
         avg_train = train_loss / len(train_loader)
         loss_history.append(avg_train)
         print(f"[Epoch {epoch+1}/{epochs}] 训练损失: {avg_train:.6f}")
-
+        torch.save(model.state_dict(), os.path.join(save_dir, "final_model.pth"))
 
         #验证
         model.eval()
